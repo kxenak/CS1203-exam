@@ -43,7 +43,7 @@ void display(NodeAddress head, int n)
     printf("\n");
     for(int i = 0; i < n - 2; i++)
     {
-        printf("%d\n", head->next2->val);
+        printf("%d: %d\n", head->val, head->next2->val);
         head = head->next;
     }
 }

@@ -38,14 +38,29 @@ NodeAddress arrayTollWithNext2(int *a, int n)
     return head;
 }
 
-NodeAddress reverseLLWithNext2(NodeAddress head)
+NodeAddress reverseLLWithNext2(NodeAddress head, int n)
 {
-    node prev, current, next;
-    node temp_head = head;
+    typedef NodeAddress node;
+    node prev, current, temp;
+    prev = head;
+    current = prev->next;
     while(current != NULL)
     {
-        
+        temp = current->next;
+        current->next = prev;
+        prev = current;
+        current = temp;
     }
+    head = prev;
+    node temp_head = head;
+    for(int i = 1; i <= n - 2; i++)
+    {
+        temp_head->next2 = temp_head->next->next;
+        temp_head = temp_head->next;
+    }
+    temp_head->next2 = NULL;
+    temp_head->next->next2 = NULL;
+    return head;
 }
 
 void display(NodeAddress head, int n)
@@ -69,6 +84,7 @@ int main()
     for(int i = 0; i < n; i++)
         scanf("%d", &a[i]);
     NodeAddress head = arrayTollWithNext2(a, n);
+    head = reverseLLWithNext2(head, n);
     display(head, n);
     return 0;
 }
