@@ -40,8 +40,12 @@ NodeAddress arrayTollWithNext2(int *a, int n)
 
 NodeAddress reverseLLWithNext2(NodeAddress head)
 {
-    typedef NodeAddress node;
-    while(head)
+    node prev, current, next;
+    node temp_head = head;
+    while(current != NULL)
+    {
+        
+    }
 }
 
 void display(NodeAddress head, int n)
