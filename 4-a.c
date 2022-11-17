@@ -1,65 +1,90 @@
-// Implemention of a heap.
+#include<stdio.h>
+#include<stdlib.h>
 
-#include <stdio.h>
-#include <stdlib.h>
+#define MAX 10000
 
-#define MAX 1000
-
-void maxheapify(int *a, int i, int n)
+void del_maxHeapify(int *a, int n, int i)
 {
-    int l = 2*i;
-    int r = 2*i+1;
-    int largest;
-    if(l <= n && a[l] > a[i])
-        largest = l;
-    else
-        largest = i;
-    if(r <= n && a[r] > a[largest])
-        largest = r;
+    int largest, left, right;
+    largest = i;
+    left = 2*i + 1;
+    right = 2*i + 2;
+    if(left < n && a[left] > a[largest])
+        largest = left;
+    if(right < n && a[right] > a[largest])
+        largest = right;
     if(largest != i)
     {
         int temp = a[i];
         a[i] = a[largest];
         a[largest] = temp;
-        maxheapify(a, largest, n);
+        del_maxHeapify(a, n, largest);
     }
 }
 
-int buildmaxheap(int *a, int n)
+void insert_maxHeapify(int *a, int n, int i)
+{
+    int parent = (i - 1)/2;
+    while(i > 0)
+    {
+        if (a[parent] < a[i])
+        {
+            int temp = a[parent];
+            a[parent] = a[i];
+            a[i] = temp;
+        }
+        i = parent;    
+        if (a[parent] < a[i])
+        {
+            int temp = a[parent];
+            a[parent] = a[i];
+            a[i] = temp;
+        }
+        parent = (i -1 )/2;
+    }
+}
+
+void insert(int *a, int *n, int val)
 {
     int i;
-    for(i = n/2; i >= 1; i--)
-        maxheapify(a, i, n);
-}
-
-void heapsort(int *a, int n)
-{
-    for(int i = n; i >= 2; i--)
+    if(*n == MAX)
     {
-        int temp = a[1];
-        a[1] = a[i];
-        a[i] = temp;
-        n--;
-        maxheapify(a, 1, n);
+        printf("FULL HEAP\n");
+        return;
     }
+    (*n)++;
+    a[*n - 1] = val;
+    insert_maxHeapify(a, *n, *n -1);
 }
 
-void thirdLargestNum(int *maxHeap, int n)
+int getMax_maxHeapify(int *a, int *n)
 {
-    heapsort(maxHeap, n);
-    printf("Third largest number: %d\n", maxHeap[n-2]);
+    int max = a[0];
+    a[0] = a[*n - 1];
+    *n = *n - 1;
+    del_maxHeapify(a, *n, 0);
+    return max;
+}
+
+void thirdLargestNum(int *maxHeap , int n)
+{
+    int num = 0;
+    for(int i = 0; i < 3; i++)
+        num = getMax_maxHeapify(maxHeap, &n);
+    printf("Third largest number: %d\n", num);
 }
 
 int main()
 {
     int a[MAX];
-    int n;
-    printf("Enter the number of elements: ");
-    scanf("%d", &n);
-    printf("Enter the elements:\n");
+    int arr[] = {99, 50, 22, 30, 1}; // This is the test array.
+    int narr = sizeof(arr)/sizeof(arr[0]);
+    int n = 0;
+    for(int i=0; i < narr; i++)
+        insert(a, &n, arr[i]);
+    printf("The heap: ");
     for(int i = 0; i < n; i++)
-        scanf("%d", &a[i]);
-    buildmaxheap(a, n);
+        printf("%d ", a[i]);
+    printf("\n");
     thirdLargestNum(a, n);
-    return 0;
 }
