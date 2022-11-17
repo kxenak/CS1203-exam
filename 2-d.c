@@ -51,6 +51,44 @@ NodeAddress arrayTollWithNextK(int *a, int n)
     return head;
 }
 
+//reverse this linked list
+
+NodeAddress reverseLLWithNextK(NodeAddress head)
+{
+    typedef NodeAddress node;
+    node prev = NULL;
+    node current = head;
+    node next = NULL;
+    while(current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    node temp_head = head;
+    node temp;
+    while(temp_head != NULL)
+    {
+        temp = temp_head;
+        for(int j = 0; j < temp_head->k; j++)
+        {
+            if(temp->next == NULL)
+            {
+                temp_head->nextk = NULL;
+                goto there;
+            }
+            else
+                temp = temp->next;
+        }
+        temp_head->nextk = temp;
+        there:
+        temp_head = temp_head->next;
+    }
+    return head;
+}
+
 int main()
 {
     int n;
